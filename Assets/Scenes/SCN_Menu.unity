@@ -1190,11 +1190,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3127308952868235921, guid: 73419ad7bfd007a41aed699e065c1326, type: 3}
       propertyPath: m_Name
-      value: PFB_Credits
+      value: PFB_About
       objectReference: {fileID: 0}
     - target: {fileID: 4592490242655794731, guid: 73419ad7bfd007a41aed699e065c1326, type: 3}
       propertyPath: m_text
-      value: "Cr\xE9ditos\n"
+      value: Sobre
       objectReference: {fileID: 0}
     - target: {fileID: 4592490242655794731, guid: 73419ad7bfd007a41aed699e065c1326, type: 3}
       propertyPath: m_fontSize
@@ -1202,7 +1202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4992379222692683056, guid: 73419ad7bfd007a41aed699e065c1326, type: 3}
       propertyPath: m_Interactable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4992379222692683056, guid: 73419ad7bfd007a41aed699e065c1326, type: 3}
       propertyPath: m_Colors.m_DisabledColor.a
