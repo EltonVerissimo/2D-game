@@ -327,11 +327,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7667fb7e362f7c47882e7b3ee4e8b17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 8835229685202505509, guid: 00afc9fb4087652419d090da0b825d97, type: 3}
   enemies:
   - {fileID: 8763598642799732872}
   - {fileID: 3599279343249421193}
-  startPoint: {fileID: 0}
+  startPoint: {fileID: 1776249007}
+  duration: 0.2
+  delay: 0.05
+  ease: 27
 --- !u!1 &282058844
 GameObject:
   m_ObjectHideFlags: 0
@@ -3964,7 +3967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2944973745361044811, guid: e0d57717ad485d748986ddb9eba2beb8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.1
+      value: -13.4800005
       objectReference: {fileID: 0}
     - target: {fileID: 2944973745361044811, guid: e0d57717ad485d748986ddb9eba2beb8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4068,6 +4071,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PFB_Astronaut
       objectReference: {fileID: 0}
+    - target: {fileID: 8835229685202505509, guid: 00afc9fb4087652419d090da0b825d97, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4095,7 +4102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8073972946613542793, guid: 3de838754c767a446a5473969062a84e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.23
+      value: -13.61
       objectReference: {fileID: 0}
     - target: {fileID: 8073972946613542793, guid: 3de838754c767a446a5473969062a84e, type: 3}
       propertyPath: m_LocalPosition.z
