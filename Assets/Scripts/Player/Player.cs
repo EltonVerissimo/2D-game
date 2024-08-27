@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using DG.Tweening;
 using UnityEngine;
 
@@ -17,8 +18,9 @@ public class Player : MonoBehaviour
 
     [Header("Check ground setup")]
 
-    public float groundCheckDistance = 1.0f;
+    public float groundCheckDistance = .05f;
     public LayerMask groundLayer;
+    [SerializeField]
 
     private bool isGrounded;
 
@@ -32,8 +34,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer))
+        if (Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer) && !isGrounded)
+        {
             handleLandScale();
+            isGrounded = true;
+        }   
 
         HandleMovement();
         HandleJump();
@@ -66,9 +71,9 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-
             if (isGrounded)
             {
+                isGrounded = false;
                 playerRigidbody.velocity = Vector2.up * jumpForce;
                 playerRigidbody.transform.localScale = Vector2.one;
                 DOTween.Kill(playerRigidbody.transform);
