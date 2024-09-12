@@ -43,17 +43,28 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer) && !isGrounded)
-        {
-            if (isGrounded == false)
-                animator.SetTrigger("Land");
-            handleLandScale();
-            isGrounded = true;
-        }
+        // if (Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer) && !isGrounded)
+        // {
+        //     if (isGrounded == false)
+        //         animator.SetTrigger("Land");
+        //     handleLandScale();
+        //     isGrounded = true;
+        // }
 
         if (timeStamp <= Time.time)
         {
             HandleJump();
+        }
+
+        if (Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer) && !isGrounded)
+        {
+            if (isGrounded == false)
+            {
+                DOTween.Kill(playerRigidbody.transform);
+                animator.SetTrigger("Land");
+                handleLandScale();
+                isGrounded = true;
+            }
         }
         HandleMovement();
     }
@@ -112,17 +123,23 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (isGrounded)
-            {
-                animator.SetTrigger("Jump");
-                isGrounded = false;
-                timeStamp = Time.time + coolDownPeriodInSeconds;
-                playerRigidbody.velocity = Vector2.up * jumpForce;
-                playerRigidbody.transform.localScale = new Vector2(leftFlip ? -1 : 1, 1);
-                DOTween.Kill(playerRigidbody.transform);
-                handleScaleJump();
-            }
-
+            // if (isGrounded)
+            // {
+            //     animator.SetTrigger("Jump");
+            //     isGrounded = false;
+            //     timeStamp = Time.time + coolDownPeriodInSeconds;
+            //     playerRigidbody.velocity = Vector2.up * jumpForce;
+            //     playerRigidbody.transform.localScale = new Vector2(leftFlip ? -1 : 1, 1);
+            //     DOTween.Kill(playerRigidbody.transform);
+            //     handleScaleJump();
+            // }
+            animator.SetTrigger("Jump");
+            isGrounded = false;
+            timeStamp = Time.time + coolDownPeriodInSeconds;
+            playerRigidbody.velocity = Vector2.up * jumpForce;
+            playerRigidbody.transform.localScale = new Vector2(leftFlip ? -1 : 1, 1);
+            DOTween.Kill(playerRigidbody.transform);
+            handleScaleJump();
         }
     }
 
@@ -142,7 +159,7 @@ public class Player : MonoBehaviour
 
     private void handleLandScale()
     {
-        if(leftFlip)
+        if (leftFlip)
         {
             playerRigidbody.transform.DOScaleX(-landpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
         }
