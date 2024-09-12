@@ -55,7 +55,11 @@ public class Player : MonoBehaviour
         {
             HandleJump();
         }
+        HandleMovement();
+    }
 
+    void FixedUpdate()
+    {
         if (Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer) && !isGrounded)
         {
             if (isGrounded == false)
@@ -66,7 +70,6 @@ public class Player : MonoBehaviour
                 isGrounded = true;
             }
         }
-        HandleMovement();
     }
 
     private void HandleMovement()
