@@ -83,6 +83,10 @@ public class Player : MonoBehaviour
         {
             HandleJump();
         }
+        if (isGrounded)
+        {
+            DOTween.Kill(playerRigidbody.transform);
+        }
         HandleMovement();
     }
 
@@ -92,7 +96,6 @@ public class Player : MonoBehaviour
         {
             if (isGrounded == false)
             {
-                DOTween.Kill(playerRigidbody.transform);
                 animator.SetTrigger("Land");
                 handleLandScale();
                 isGrounded = true;
@@ -169,7 +172,6 @@ public class Player : MonoBehaviour
             timeStamp = Time.time + coolDownPeriodInSeconds;
             playerRigidbody.velocity = Vector2.up * jumpForce;
             playerRigidbody.transform.localScale = new Vector2(leftFlip ? -1 : 1, 1);
-            DOTween.Kill(playerRigidbody.transform);
             handleScaleJump();
         }
     }
