@@ -7,6 +7,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Rigidbody2D playerRigidbody;
+    public HealthBase healthBase;
+    public ItemManager itemManager;
 
     [Header("Speed setup")]
     public Vector2 friction = new Vector2(.1f, 0);
@@ -37,9 +39,35 @@ public class Player : MonoBehaviour
     [Header("Animation player")]
     public string boolRun = "Run";
     public string boolSprint = "Sprint";
+    public string triggerDeath = "Death";
     public Animator animator;
     public float timeStamp = 0.8f;
     public float coolDownPeriodInSeconds = 0.8f;
+
+    private void Awake()
+    {
+        if(healthBase != null)
+        {
+            healthBase.onKill += OnPlayerKill;
+        }
+
+        if (itemManager != null)
+        {
+            itemManager.onAddCoins += OnAddCoins;
+        }
+    }
+
+    private void OnAddCoins()
+    {
+        itemManager.onAddCoins -= OnAddCoins;
+    }
+
+    private void OnPlayerKill()
+    {
+        healthBase.onKill -= OnPlayerKill;
+
+        animator.SetTrigger(triggerDeath);
+    }
 
     void Update()
     {
@@ -171,5 +199,10 @@ public class Player : MonoBehaviour
             playerRigidbody.transform.DOScaleX(landpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
         }
         playerRigidbody.transform.DOScaleY(landScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
+    }
+
+    public void DestroyMe()
+    {
+        Destroy(gameObject);
     }
 }

@@ -8,6 +8,24 @@ public class EnemyBase : MonoBehaviour
 
     public Animator animator;
     public string triggerAttack = "Attack";
+    public string triggerKill = "Kill";
+    public HealthBase healthBase;
+    public float timeToDestroy = 1.0f;
+
+    private void Awake()
+    {
+        if (healthBase != null)
+        {
+            healthBase.onKill += OnEnemyKill;
+        }
+    }
+
+    private void OnEnemyKill()
+    {
+        healthBase.onKill -= OnEnemyKill;
+        PlayKillAnimation();
+        Destroy(gameObject, timeToDestroy);
+    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -25,5 +43,15 @@ public class EnemyBase : MonoBehaviour
     private void PlayAttackAnimation()
     {
         animator.SetTrigger(triggerAttack);
+    }
+
+    private void PlayKillAnimation()
+    {
+        animator.SetTrigger(triggerKill);
+    }
+
+    public void Damage(int amount)
+    {
+        healthBase.Damage(amount);
     }
 }

@@ -1,10 +1,11 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class HealthBase : MonoBehaviour
 {
+    public Action onKill;
     public float delayToKill = 0;
     public int startLife = 10;
     public bool destroyOnKill = false;
@@ -20,11 +21,6 @@ public class HealthBase : MonoBehaviour
         {
             flashColor = GetComponent<FlashColor>();
         }
-    }
-
-    void Start()
-    {
-
     }
 
     private void Init()
@@ -56,5 +52,6 @@ public class HealthBase : MonoBehaviour
         {
             Destroy(gameObject, delayToKill);
         }
+        onKill?.Invoke();
     }
 }
