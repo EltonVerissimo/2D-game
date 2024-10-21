@@ -4,36 +4,33 @@ using System.Collections.Generic;
 using Ebac.Core.Singleton;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ItemManager : Singleton<ItemManager>
 {
 
     public int coins;
-    public TMP_Text coinsText;
+    public TMP_Text uiTextCoins;
     public Action onAddCoins;
 
     private void Start()
     {
         Reset();
-        setCoinsText(coins);
     }
 
     private void Reset()
     {
         coins = 0;
-        setCoinsText(coins);
+        UpdateUI();
     }
 
     public void addCoins(int amount = 1)
     {
         coins += amount;
-        setCoinsText(coins);
-        onAddCoins?.Invoke();
+        UpdateUI();
     }
 
-    private void setCoinsText(int value)
+    private void UpdateUI()
     {
-        this.coinsText.text = "x" + value.ToString();
+        uiTextCoins.text = "X" + coins.ToString();
     }
 }
