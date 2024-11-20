@@ -8,7 +8,7 @@ using UnityEngine;
 public class ItemManager : Singleton<ItemManager>
 {
 
-    public int coins;
+    public SOint coins;
     public TMP_Text uiTextCoins;
     public Action onAddCoins;
 
@@ -19,18 +19,19 @@ public class ItemManager : Singleton<ItemManager>
 
     private void Reset()
     {
-        coins = 0;
+        coins.value = 0;
         UpdateUI();
     }
 
     public void addCoins(int amount = 1)
     {
-        coins += amount;
+        coins.value += amount;
         UpdateUI();
     }
 
     private void UpdateUI()
     {
-        uiTextCoins.text = "X" + coins.ToString();
+        //uiTextCoins.text = "X " + coins.ToString();
+        //UIGameManager.UpdateTextCoins(coins.ToString());
     }
 }

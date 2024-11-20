@@ -8,44 +8,28 @@ public class Player : MonoBehaviour
 {
     public Rigidbody2D playerRigidbody;
     public HealthBase healthBase;
-    public ItemManager itemManager;
 
-    [Header("Speed setup")]
-    public Vector2 friction = new Vector2(.1f, 0);
-    public float speed;
-    public float speedRun;
-    public float jumpForce = 2;
+    [Header("Setup")]
+    public SO_playerSetup SO_PlayerSetup;
 
-    private float _currentSpeed;
-
-    [Header("Check ground setup")]
-
-    public float groundCheckDistance = .05f;
-    public LayerMask groundLayer;
     [SerializeField]
-
     private bool isGrounded;
-
-    [Header("Animation setup")]
-    public float jumpScaleY = 1.5f;
-    public float jumpScaleX = .7f;
-    public float landScaleY = .7f;
-    public float landpScaleX = 1.5f;
-    public float animationDuration = .1f;
-    public Ease easeOutback = Ease.OutBack;
-    [SerializeField]
     private bool leftFlip = false;
 
-    [Header("Animation player")]
-    public string boolRun = "Run";
-    public string boolSprint = "Sprint";
-    public string triggerDeath = "Death";
-    public Animator animator;
+
+    public ItemManager itemManager;
+
+    private float _currentSpeed;
+    private Animator _currentPlayer;
+
+    //public Animator animator;
     public float timeStamp = 0.8f;
     public float coolDownPeriodInSeconds = 0.8f;
 
     private void Awake()
     {
+        _currentPlayer = Instantiate(SO_PlayerSetup.player, transform);
+
         if(healthBase != null)
         {
             healthBase.onKill += OnPlayerKill;
@@ -66,7 +50,7 @@ public class Player : MonoBehaviour
     {
         healthBase.onKill -= OnPlayerKill;
 
-        animator.SetTrigger(triggerDeath);
+        _currentPlayer.SetTrigger(SO_PlayerSetup.triggerDeath);
     }
 
     void Update()
@@ -92,11 +76,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer) && !isGrounded)
+        if (Physics2D.Raycast(transform.position, Vector2.down, SO_PlayerSetup.groundCheckDistance, SO_PlayerSetup.groundLayer) && !isGrounded)
         {
             if (isGrounded == false)
             {
-                animator.SetTrigger("Land");
+                _currentPlayer.SetTrigger("Land");
                 handleLandScale();
                 isGrounded = true;
             }
@@ -109,13 +93,13 @@ public class Player : MonoBehaviour
 
         if ((Input.GetKey(KeyCode.LeftControl)))
         {
-            _currentSpeed = speedRun;
-            animator.SetBool(boolSprint, true);
+            _currentSpeed = SO_PlayerSetup.speedRun;
+            _currentPlayer.SetBool(SO_PlayerSetup.boolSprint, true);
         }
         else
         {
-            _currentSpeed = speed;
-            animator.SetBool(boolSprint, false);
+            _currentSpeed = SO_PlayerSetup.speed;
+            _currentPlayer.SetBool(SO_PlayerSetup.boolSprint, false);
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -126,7 +110,7 @@ public class Player : MonoBehaviour
             {
                 playerRigidbody.transform.DOScaleX(-1, .1f);
             }
-            animator.SetBool(boolRun, true);
+            _currentPlayer.SetBool(SO_PlayerSetup.boolRun, true);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -136,20 +120,20 @@ public class Player : MonoBehaviour
             {
                 playerRigidbody.transform.DOScaleX(1, .1f);
             }
-            animator.SetBool(boolRun, true);
+            _currentPlayer.SetBool(SO_PlayerSetup.boolRun, true);
         }
         else
         {
-            animator.SetBool(boolRun, false);
+            _currentPlayer.SetBool(SO_PlayerSetup.boolRun, false);
         }
 
         if (playerRigidbody.velocity.x > 0)
         {
-            playerRigidbody.velocity -= friction;
+            playerRigidbody.velocity -= SO_PlayerSetup.friction;
         }
         else if (playerRigidbody.velocity.x < 0)
         {
-            playerRigidbody.velocity += friction;
+            playerRigidbody.velocity += SO_PlayerSetup.friction;
         }
     }
 
@@ -167,10 +151,10 @@ public class Player : MonoBehaviour
             //     DOTween.Kill(playerRigidbody.transform);
             //     handleScaleJump();
             // }
-            animator.SetTrigger("Jump");
+            _currentPlayer.SetTrigger("Jump");
             isGrounded = false;
             timeStamp = Time.time + coolDownPeriodInSeconds;
-            playerRigidbody.velocity = Vector2.up * jumpForce;
+            playerRigidbody.velocity = Vector2.up * SO_PlayerSetup.jumpForce;
             playerRigidbody.transform.localScale = new Vector2(leftFlip ? -1 : 1, 1);
             handleScaleJump();
         }
@@ -180,27 +164,27 @@ public class Player : MonoBehaviour
     {
         if (leftFlip)
         {
-            playerRigidbody.transform.DOScaleX(-jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
+            playerRigidbody.transform.DOScaleX(-SO_PlayerSetup.jumpScaleX, SO_PlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(SO_PlayerSetup.easeOutback);
         }
         else
         {
 
-            playerRigidbody.transform.DOScaleX(jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
+            playerRigidbody.transform.DOScaleX(SO_PlayerSetup.jumpScaleX, SO_PlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(SO_PlayerSetup.easeOutback);
         }
-        playerRigidbody.transform.DOScaleY(jumpScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
+        playerRigidbody.transform.DOScaleY(SO_PlayerSetup.jumpScaleY, SO_PlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(SO_PlayerSetup.easeOutback);
     }
 
     private void handleLandScale()
     {
         if (leftFlip)
         {
-            playerRigidbody.transform.DOScaleX(-landpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
+            playerRigidbody.transform.DOScaleX(-SO_PlayerSetup.landpScaleX, SO_PlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(SO_PlayerSetup.easeOutback);
         }
         else
         {
-            playerRigidbody.transform.DOScaleX(landpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
+            playerRigidbody.transform.DOScaleX(SO_PlayerSetup.landpScaleX, SO_PlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(SO_PlayerSetup.easeOutback);
         }
-        playerRigidbody.transform.DOScaleY(landScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(easeOutback);
+        playerRigidbody.transform.DOScaleY(SO_PlayerSetup.landScaleY,SO_PlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(SO_PlayerSetup.easeOutback);
     }
 
     public void DestroyMe()
